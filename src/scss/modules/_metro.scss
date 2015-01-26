@@ -1,0 +1,199 @@
+.metro-station {
+
+ 	.container {
+ 		fill: white;
+ 		fill-opacity: 1;
+ 	}
+
+	.entry {
+		fill-opacity: 0.6;
+		@include metro-fill-lines();
+	}
+
+	&.active {
+		font-weight: bold;
+	}
+
+	&.end {
+		font-weight: bold;
+	}
+
+	.station-name {
+		fill-opacity: 1;
+		font-size: 0.5em;
+		fill: black;
+
+		&.end,
+		&.main {
+			font-size: 0.75em;
+		}
+	}
+}
+
+.metro-line {
+	stroke: $color-line-default;
+	stroke-width: 1px;
+
+	@include metro-stroke-lines();
+}
+
+.metro-prediction {
+	opacity: 1;
+	@include metro-fill-lines();
+	@include metro-stroke-lines();
+
+	&.sonar {
+		fill: none;
+		stroke-width: 3px;
+	}
+
+	text {
+		fill: black;
+		font-size: 0.75em;
+		font-weight: bold;
+	}
+}
+
+.metro-route-view {
+	height: 100%;
+	width: 100%; //15%;
+	z-index: 10;
+
+	//background-color: whitesmoke;//ghostwhite;
+
+	display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    //right: -15%;
+
+    font-size: 1em;
+    fill-opacity: 1;
+    stroke-width: 1;
+    
+    transition: all 500ms ease;
+    
+    .metro-route-view-svg {
+    }
+
+    .metro-route-predictions {
+
+		.heading {
+			font-size: 1em;
+			textLength: 20;
+			lengthAdjust: spacing;
+
+			path {
+				fill-opacity: 1;
+				stroke: black;
+				stroke-width: 0.5;
+			}
+		}
+
+		.metro-route-prediction {
+			font-size: 0.8em;
+
+			.line {
+				@include metro-fill-lines();
+			}
+
+			.wrapper {
+				stroke: $color-line-default;
+				fill: none;
+			}
+			
+			.arrival {
+				display: inline-block;
+				textLength: 10;
+				lengthAdjust: spacing;
+			}
+			.destination {
+				display: inline-block;
+			}
+		}
+	}
+
+	.metro-route-plan {
+
+		.entry {
+			font-size: 0.8em;
+
+			.line {
+				fill-opacity: 0.8;
+				@include metro-fill-lines();
+			}
+		}
+
+		.link {
+			stroke-width: 1;
+			stroke: $color-line-default;
+		}
+	}
+}
+
+.metro-map-detail {
+	transform: scale(0, 0);
+	transition: all .5s ease-in-out;
+
+    position: relative;
+	width: 50%;
+	height: 50%;
+	
+	left: 25%;
+	top: 10%;
+	z-index: 20;
+
+
+	background-color: white;
+	border-style: solid;
+    border-width: 1px;
+    border-color: $color-line-default;
+    border-radius: 3px;
+
+    section {
+    	overflow-y: scroll;
+    	height: 100%;
+    }
+	p {
+		margin-top: 0;
+		padding-left: 2%;
+		padding-right: 2%;
+	}
+
+	h4 {
+		margin-bottom: 0;
+		padding-left: 2%;
+	}
+	h4:not(:first-child) {
+		margin-top: 0;
+	}
+
+	header {
+		.close {
+			padding: 1%;
+			float: right;
+		}
+	}
+	
+    footer {
+    	position: absolute;
+    	background-color: white; 
+    	bottom: 0;
+    	left: 0;
+    	width: 100%;
+	
+		span {
+			padding: 2%;
+		}
+		span:first-child {
+			float: left;
+		}
+		span:last-child {
+			float: right;
+		}
+	}
+
+	&.active {
+		transform: scale(1, 1);
+	}
+}

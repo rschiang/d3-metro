@@ -1,0 +1,49 @@
+$color-line-default: #aaa;
+$color-line-blue: #0795d3;
+$color-line-green: #00b050;
+$color-line-orange: #da8707;
+$color-line-red: #be1337;
+$color-line-silver: #a2a4a1;
+$color-line-yellow: #f5d415;
+
+@mixin metro-fill-lines() {
+	&.BL {
+		fill: $color-line-blue;
+	}
+	&.GR {
+		fill: $color-line-green;
+	}
+	&.OR {
+		fill: $color-line-orange;
+	}
+	&.RD {
+		fill: $color-line-red;
+	} 		
+	&.SV {
+		fill: $color-line-silver;
+	}
+	&.YL {
+		fill: $color-line-yellow;
+	}
+}
+
+@mixin metro-stroke-lines() {
+	&.BL {
+		stroke: $color-line-blue;
+	}
+	&.GR {
+		stroke: $color-line-green;
+	}
+	&.OR {
+		stroke: $color-line-orange;
+	}
+	&.RD {
+		stroke: $color-line-red;
+	} 		
+	&.SV {
+		stroke: $color-line-silver;
+	}
+	&.YL {
+		stroke: $color-line-yellow;
+	}
+}

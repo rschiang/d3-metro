@@ -1,0 +1,54 @@
+// Base Font
+$base-font-family: "Helvetica Neue", HelveticaNeue, helvetica, arial, sans-serif;
+$base-font-family-heading: HelveticaNeue-Light, "Helvetica Neue", HelveticaNeue, helvetica, arial, sans-serif;
+
+$base-color: white;
+
+// Fixed Font
+$fixed-font-family: monospace;
+$fixed-font-size: 85%;
+
+html,
+body {
+  	height: 100%;
+  	width: 100%;
+	margin: 0;
+	padding: 0;
+	
+	font: 13px/1.25 $base-font-family;
+
+ 	overflow: hidden;
+ 	line-height: 1.25em;
+
+ 	background-color: $base-color;
+
+	-webkit-font-smoothing: antialiased;
+ 	-webkit-hyphens: auto;
+	-webkit-transform: translate3d(0, 0, 0);
+ 	-webkit-backface-visibility: hidden;
+}
+
+div {
+	height: 100%;
+}
+
+svg {
+	stroke-width: 0px;
+	//margin-top: 1%;
+}
+
+.metro-map-view {
+	height: 100%;
+	width: 100%;
+	z-index: 20;
+
+	display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    vertical-align: top;
+    overflow: hidden;
+    //display: none;
+    //opacity: 0;
+}

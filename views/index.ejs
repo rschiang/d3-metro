@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>d3js metro map</title>
+    <link rel='stylesheet' href='/stylesheets/main.css' />
+    
+</head>
+<body>
+    <script data-main="javascript/main" src="javascript/lib/require.min.js"></script>
+
+    <div id="metroMap" class="metro-map-view"></div>
+    <div id="metroRoute" class="metro-route-view"></div>
+
+    <div class="metro-map-detail">
+    	<header>
+    		<span class="close">&#10006;</span>
+    	</header>
+    	<section>
+			<h4>About</h4>
+			<p>
+			This is an experimental project that represents Washington DC's WMATA Metro system using a force directed diagram. It allows the selection and display of planned routes, train prediction and, the very approximate location of predicted trains within the nextwork.
+			</p>
+			<h4>Usage</h4>
+			<p>
+			Click on Metro stations to display or reset planned routes. Once selected, train predication data will also be displayed
+			</p>
+			<h4>General</h4>
+			<p>
+			This project has been developed (almost) entirely with HTML SVG elements and the D3.js Javascript library. It uses features that may only be available in advanced browsers and has been tested with latest versions of Safari and Chrome.
+			</p>
+    	<section>
+    	<footer>
+    		<span>
+    			<a href="mailto:davidctaylor5@gmail.com?Subject=Contact%20Metro%20Map" target="_top">David Taylor</a>
+    		</span>
+    		<span>January 24, 2014</span>
+    	</footer>
+    </div>
+ </body>
