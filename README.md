@@ -11,3 +11,8 @@ General
 -------
 This project has been developed (almost) entirely with HTML SVG elements and the D3.js Javascript library. The pimary layout has been implemented as a D3 force directed diagram that takes advantage of the collision detection and fisheye functionality.
 
+
+View page
+---------
+http://d3metro.github.io/
+
