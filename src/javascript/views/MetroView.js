@@ -447,11 +447,11 @@ define([
 
             this.resetPrediction();
 
-            if (!predictions || !predictions.length) {
+            if (!predictions || predictions.status !== 'success' || !predictions.data.length) {
                 return;
             }
             
-            predictions.forEach(function (prediction, idx) {
+            predictions.data.forEach(function (prediction, idx) {
                 var dist = 0,
                     prev = (prediction.prev) ? nodes[prediction.prev.id] : null,
                     curr = (prediction.curr) ? nodes[prediction.curr.id] : null;

@@ -108,7 +108,7 @@ define([
                 data = (predictions.data) ? predictions.data.splice(0, RouteView.config.MAX_PREDICTIONS) : [],
                 elem;
 
-            if (predictions.status !== 'success' && this.last) {
+            if (predictions.status !== 'success' && typeof _this.lastPrediction !== 'undefined') {
                 return;
             }
  
