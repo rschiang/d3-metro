@@ -445,11 +445,11 @@ define([
                 active = [],
                 predictions = this.modelRoute.get('predictions');
 
-            this.resetPrediction();
-
             if (!predictions || predictions.status !== 'success' || !predictions.data.length) {
                 return;
             }
+
+            this.resetPrediction();
             
             predictions.data.forEach(function (prediction, idx) {
                 var dist = 0,
