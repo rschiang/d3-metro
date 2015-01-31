@@ -27,6 +27,10 @@
 		&.main {
 			font-size: 0.75em;
 		}
+
+		&.active {
+			fill-opacity: 1;
+		}
 	}
 }
 

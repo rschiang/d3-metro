@@ -42,6 +42,7 @@ define([
                     .radius(75)
                     .distortion(3);
 
+                var _this = this;
                 this.force = d3.layout.force()
                     .size([width, height])
                     .charge(function (d) {
@@ -55,10 +56,14 @@ define([
                             40 : MetroView.config.LINK_DISTANCE;
                     })
                     .gravity(0.02)
-                    .on('tick', this.tick.bind(this));
-                    //.on('end', function () {
-                        //console.log('load end...');
-                    //});
+                    .on('tick', this.tick.bind(this))
+                    .on('end', function () {
+                        _this.labels
+                            .transition()
+                            .duration(1000)
+                            .attr('dx', function (d) { return d.dx; })
+                            .attr('dy', function (d) { return d.dy; });
+                    });
 
                 this.svg.on('mousemove', this.handleMouseMove.bind(this));
                 this.modelRoute.on('update:route', this.renderRoutePlan, this);
@@ -123,7 +128,7 @@ define([
 
         addStations: function () {
             var _this = this;
-            this.nodes.each(function (d, idx) {
+            this.nodes.each(function (d) {
                 var node = d3.select(this),
                     stationPos = 360 / d.cds.length;
 
@@ -170,8 +175,7 @@ define([
                 d.width = this.getBBox().width;
                 d.dx = 0;
                 d.dy = 0;
-                d.angle = (idx % 2 === 0) ? 315 : 135;
-                
+
                 _this.labelPosition(d);
             });
         },
@@ -190,10 +194,24 @@ define([
 
             this.labels
                 .each(this.collide())
-                .transition()
-                .attr('a', function (d) { return d.angle; })
-                .attr('dx', function (d) { return d.dx; })
-                .attr('dy', function (d) { return d.dy; });
+                .each(function () {
+                    if (this.className.baseVal.indexOf('active') < 0) {
+                        d3.select(this)
+                            .transition()
+                            .each('start', function () {
+                                d3.select(this).classed({active: true});
+                            })
+                            .each('end', function () {
+                                d3.select(this).classed({active: false});
+                            })
+                            .duration(1000)
+                            .attr('a', function (d) { return d.angle; })
+                            .attr('dx', function (d) {
+                                return d.dx;
+                            })
+                            .attr('dy', function (d) { return d.dy; });
+                    }
+                });
         },
 
         /*
@@ -379,12 +397,14 @@ define([
 
         labelPosition: function (d) {
             var padding = 0,
+                a = [0, 45, 90, 135, 180, 225, 270, 315],
                 r = (d.cds.length > 1) ? MetroView.config.RADIUS * 1.5 :
                     MetroView.config.RADIUS;
 
             r = MetroView.config.RADIUS;
             d.angle = (typeof d.angle !== 'undefined') ? (d.angle + 45) % 360 :
-                d.angle = Math.floor(Math.random() * 361);
+                d.angle = a[Math.floor(Math.random() * a.length)];
+
             d.dx = r + padding * Math.cos(d.angle * Math.PI / 180);
             d.dy = r + padding * Math.sin(d.angle * Math.PI / 180);
 
