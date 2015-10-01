@@ -24,7 +24,7 @@ define([
                 if (request.dataType === 'jsonp') {
                     this.jsonp(resolve, reject, request);
                 } else {
-                    reject('Request type currently unsupported');
+                    this.http(resolve, reject, request);
                 }
             }.bind(this)), request);
         },
@@ -72,6 +72,32 @@ define([
             elem.charset = 'utf-8';
 
             doc.getElementsByTagName('head')[0].appendChild(elem);
+        },
+
+        http: function (resolve, reject, request) {
+            var req = new XMLHttpRequest();
+
+            req.timeout = Ajax.config.TIMEOUT;
+            req.ontimeout = function() {
+                reject('Request timed out');
+            }
+
+            req.onreadystatechange = function () {
+                if (req.readyState == XMLHttpRequest.DONE) {
+                    if (req.status == 200) {
+                        try {
+                            resolve(JSON.parse(req.responseText));
+                        } catch(error) {
+                            reject(error);
+                        }
+                    } else {
+                        reject('Invalid response');
+                    }
+                }
+            }
+
+            req.open('GET', request.url, true);
+            req.send();
         }
     };
 

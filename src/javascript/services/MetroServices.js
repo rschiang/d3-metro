@@ -26,7 +26,7 @@ define([
 		predict: function (stationCode) {
 			return ajax.request({
 				url: MetroServices.WMATA_PREDICT + stationCode + '?api_key=' + MetroServices.WMATA_KEY,
-				dataType: 'jsonp'
+				dataType: 'http'
 			});
 		}
     };
