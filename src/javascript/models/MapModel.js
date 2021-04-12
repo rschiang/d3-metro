@@ -1,11 +1,9 @@
 define([
     './MetroModel',
-    '../services/MetroServices',
     '../utils/Model'
 
 ], function (
     MetroModel,
-    metroServices,
     Model
 
 ) {

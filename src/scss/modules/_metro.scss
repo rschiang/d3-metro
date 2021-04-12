@@ -11,21 +11,22 @@
 	}
 
 	&.active {
-		font-weight: bold;
+		font-weight: 800;
 	}
 
 	&.end {
-		font-weight: bold;
+		font-weight: 600;
 	}
 
 	.station-name {
 		fill-opacity: 1;
-		font-size: 0.5em;
+		font-size: 0.875em;
+        font-weight: 500;
 		fill: black;
 
 		&.end,
 		&.main {
-			font-size: 0.75em;
+			font-size: 1em;
 		}
 
 		&.active {
@@ -36,7 +37,7 @@
 
 .metro-line {
 	stroke: $color-line-default;
-	stroke-width: 1px;
+	stroke-width: 0.15em;
 
 	@include metro-stroke-lines();
 }
@@ -48,35 +49,32 @@
 
 	&.sonar {
 		fill: none;
-		stroke-width: 3px;
+		stroke-width: 0.3em;
 	}
 
 	text {
 		fill: black;
-		font-size: 0.75em;
+		font-size: 1em;
 		font-weight: bold;
 	}
 }
 
 .metro-route-view {
 	height: 100%;
-	width: 100%; //15%;
+	width: 100%;
 	z-index: 10;
-
-	//background-color: whitesmoke;//ghostwhite;
 
 	display: inline-block;
     position: absolute;
     top: 0;
     left: 0;
-    //right: -15%;
 
-    font-size: 1em;
+    font-size: 1.15rem;
     fill-opacity: 1;
     stroke-width: 1;
-    
+
     transition: all 500ms ease;
-    
+
     .metro-route-view-svg {
     }
 
@@ -90,12 +88,12 @@
 			path {
 				fill-opacity: 1;
 				stroke: black;
-				stroke-width: 0.5;
+				stroke-width: 0.15em;
 			}
 		}
 
 		.metro-route-prediction {
-			font-size: 0.8em;
+			font-size: 1em;
 
 			.line {
 				@include metro-fill-lines();
@@ -105,7 +103,7 @@
 				stroke: $color-line-default;
 				fill: none;
 			}
-			
+
 			.arrival {
 				display: inline-block;
 				textLength: 10;
@@ -120,7 +118,7 @@
 	.metro-route-plan {
 
 		.entry {
-			font-size: 0.8em;
+			font-size: 1em;
 
 			.line {
 				fill-opacity: 0.8;
@@ -143,7 +141,7 @@
     position: relative;
 	width: 50%;
 	height: 50%;
-	
+
 	left: 25%;
 	top: 10%;
 	z-index: 20;
@@ -179,14 +177,14 @@
 			float: right;
 		}
 	}
-	
+
     footer {
     	position: absolute;
-    	background-color: white; 
+    	background-color: white;
     	bottom: 0;
     	left: 0;
     	width: 100%;
-	
+
 		span {
 			padding: 2%;
 		}

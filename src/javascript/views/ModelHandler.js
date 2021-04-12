@@ -1,11 +1,9 @@
 /*global Promise */
 define([
-    "../services/MetroServices",
     "../services/RoutePlanner",
     "../utils/Events"
 
 ], function (
-    metroServices,
     RoutePlanner,
     events
 
@@ -76,30 +74,7 @@ define([
         },
 
         trainPrediction: function (routePlan) {
-            var _this = this,
-                predictions = this.loadPredictions(routePlan[0].cde);
-
-            return new Promise(function (resolve) {
-
-                predictions.then(function (prediction) {
-                    var result = [],
-                        direction = (routePlan[0].id > routePlan[1].id) ? 'decrement' : 'increment';
-
-                    prediction.forEach(function (entry) {
-                        if (entry.lne === routePlan[0].lne) {
-                            if ((direction === 'decrement' && routePlan[0].id >= entry.id) ||
-                                (direction === 'increment' && routePlan[0].id <= entry.id)) {
-                                result.push(_this.locateTrain(
-                                    entry,
-                                    entry.lne,
-                                    entry.cde,
-                                    direction));
-                            }
-                        }
-                    });
-                    resolve(result);
-                });
-            });
+            return Promise.reject('Not supported');
         },
 
         initMapCenter: function () {
@@ -126,33 +101,6 @@ define([
         convertLon: function (lon) {
             var x = (Math.floor(((180.0 + lon) / 360.0) * ModelHandler.MERCATOR_OFFSET));
             return x - (this.mapCenter.x - (this.mapWidth / 2));
-        },
-
-        loadPredictions: function (stationCode) {
-            var _this = this;
-            return metroServices.predict(stationCode)
-            .then(function (response) {
-                var result = [];
-                response.Trains.forEach(function (entry) {
-                    if (entry.Line === 'No' ||
-                        entry.Destination === 'No Passenger' ||
-                        entry.Destination === 'Train') {
-                        return true;
-                    }
-
-                    result.push({
-                        cde: entry.LocationCode,
-                        lne: entry.Line,
-                        id: _this.model.routeMap[entry.Line + "-" + entry.LocationCode].id,
-                        distance: isNaN(entry.Min) ? 0 : entry.Min * ModelHandler.FEET_PER_MINUTE,
-                        min: entry.Min
-                    });
-                });
-
-                return result;
-            }, function (error) {
-                console.log('Error loading station predict:', error);
-            });
         },
 
         locateTrain: function (prediction, lne, cde, direction) {

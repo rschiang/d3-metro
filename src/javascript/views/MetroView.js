@@ -39,21 +39,21 @@ define([
                 MetroMenu.initialize();
 
                 this.fisheye = d3fisheye.circular()
-                    .radius(75)
-                    .distortion(3);
+                    .radius(100)
+                    .distortion(2);
 
                 var _this = this;
                 this.force = d3.layout.force()
                     .size([width, height])
                     .charge(function (d) {
-                        return (d.tc === 'm') ? -20 : -20;
+                        return -30;
                     })
                     .linkStrength(function (d) {
-                        return (d.source.tc === 'e' || d.target.tc === '2') ? 1 : 1;
+                        return 1.5;
                     })
                     .linkDistance(function (d) {
                         return (d.source.tc === 'm' || d.target.tc === 'm') ?
-                            40 : MetroView.config.LINK_DISTANCE;
+                            50 : MetroView.config.LINK_DISTANCE;
                     })
                     .gravity(0.02)
                     .on('tick', this.tick.bind(this))
@@ -559,12 +559,12 @@ define([
     };
 
     MetroView.config = {
-        'RADIUS': 5,
-        'RADIUS_ACTIVE': 10,
+        'RADIUS': 7,
+        'RADIUS_ACTIVE': 14,
         'TRANSITION_DURATION': 125,
         'PREDICTION_DURATION': 3000,
         'PREDICTION_DELAY': 1000,
-        'LINK_DISTANCE': 20
+        'LINK_DISTANCE': 30
     };
 
     return {

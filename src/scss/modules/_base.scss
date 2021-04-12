@@ -4,18 +4,14 @@ $base-font-family-heading: HelveticaNeue-Light, "Helvetica Neue", HelveticaNeue,
 
 $base-color: white;
 
-// Fixed Font
-$fixed-font-family: monospace;
-$fixed-font-size: 85%;
-
 html,
 body {
   	height: 100%;
   	width: 100%;
 	margin: 0;
 	padding: 0;
-	
-	font: 13px/1.25 $base-font-family;
+
+	font: 87.5%/1.25 $base-font-family;
 
  	overflow: hidden;
  	line-height: 1.25em;
@@ -49,6 +45,4 @@ svg {
 
     vertical-align: top;
     overflow: hidden;
-    //display: none;
-    //opacity: 0;
 }

@@ -2,7 +2,7 @@ define([
     '../utils/bezierPoints',
     '../utils/svgUtils',
     'd3'
-    
+
 ], function (
     bezier,
     d3Metro,
@@ -37,7 +37,7 @@ define([
                     .y(function (d) {
                         return d.y;
                     });
- 
+
             this.modelRoute.on('update', this.handleUpdate, this);
             this.modelRoute.on('update:route', this.renderRoutePlan, this);
         },
@@ -60,7 +60,7 @@ define([
             this.sideBar = this.svg.append('g')
                 .style('opacity', 0)
                 .classed('metro-route-sidebar', true);
-            
+
             this.ordinalY = d3.scale.ordinal()
                 .domain(d3.range(RouteView.config.MAX_PREDICTIONS + 2))
                 .rangePoints([RouteView.config.PADDING_TOP,
@@ -111,7 +111,7 @@ define([
             if (predictions.status !== 'success' && typeof _this.lastPrediction !== 'undefined') {
                 return;
             }
- 
+
             elem = _this.svg.select('.metro-route-predictions')
                 .selectAll('.metro-route-prediction')
                 .data(data);
@@ -159,7 +159,7 @@ define([
             elem.call(_this.remove);
             _this.lastPrediction = data;
         },
-        
+
         /*
         * Display stations in route plan
         */
@@ -175,7 +175,7 @@ define([
                     var id = (_this.modelRoute.get('route')[0]) ? _this.modelRoute.get('route')[0].id : null;
                     return 'Departing: ' + ((id) ? _this.modelMap.get('nodes')[id].nme : '');
                 });
-        
+
             h = (h > _this.height) ? _this.height : h;
             y.domain(d3.range(_this.modelRoute.get('route').length))
                 .rangePoints([_this.ordinalY(RouteView.config.MAX_PREDICTIONS) +
@@ -363,7 +363,7 @@ define([
        /*
         * Remove any existing text by class before creating new text elements
         *
-        * Break down text to seperate text elements, allowing transitions to 
+        * Break down text to seperate text elements, allowing transitions to
         * be performed for each character in string.
         */
         handleTextUpdate: function (node, args) {
@@ -415,15 +415,15 @@ define([
 
     RouteView.config = {
         'VIEW_OFFSET': 20,
-        'RADIUS': 4,
+        'RADIUS': 7,
         'PADDING_LEFT': 0,
-        'PADDING_RIGHT': 10,
-        'PADDING': 4,
-        'PADDING_TOP': 10,
-        'ELEMENT_HEIGHT': 25,
+        'PADDING_RIGHT': 14,
+        'PADDING': 7,
+        'PADDING_TOP': 7,
+        'ELEMENT_HEIGHT': 35,
         'MAX_PREDICTIONS' : 3
     };
-    
+
     return {
         initialize: function (args) {
             RouteView.initialize(args);
