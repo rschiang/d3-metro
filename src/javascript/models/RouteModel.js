@@ -24,10 +24,10 @@ define([
             if (!routePlan ||
                 typeof routePlan === 'undefined' ||
                 !routePlan.length) {
-                
+
                 return Promise.resolve([]);
             }
-                
+
             predictions = this.loadPredictions(routePlan[0].cde);
 
             return new Promise(function (resolve, reject) {
@@ -128,7 +128,7 @@ define([
     */
     return Model.inherits({
         initialize: function (args) {
-            
+
             ModelUtils.initialize(args);
             this.routePlanner = new RoutePlanner({model: MetroModel.routeMap});
             this.set({predictions: []});
@@ -139,7 +139,7 @@ define([
             var _this = this, i, l,
                 plan = [],
                 result = [],
-                regExp = /(.*)-(.*)/,
+                regExp = /([A-Z]+)(\d+)/,
                 fromCodes = [],
                 toCodes = [];
 
@@ -183,7 +183,7 @@ define([
                     dist: e.distance
                 });
             }
-            
+
             return this.set({route: result});
         },
 

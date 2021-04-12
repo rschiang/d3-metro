@@ -45,7 +45,7 @@ define([
             var _this = this,
                 plan = null,
                 result = [],
-                regExp = /(.*)-(.*)/,
+                regExp = /([A-Z]+)(\d+)/,
                 fromCodes = request.from,
                 toCodes = request.to;
 
@@ -71,16 +71,16 @@ define([
                     dist: entry.distance
                 });
             });
-            
+
             return result;
         },
 
         trainPrediction: function (routePlan) {
             var _this = this,
                 predictions = this.loadPredictions(routePlan[0].cde);
-            
+
             return new Promise(function (resolve) {
-                
+
                 predictions.then(function (prediction) {
                     var result = [],
                         direction = (routePlan[0].id > routePlan[1].id) ? 'decrement' : 'increment';
@@ -105,7 +105,7 @@ define([
         initMapCenter: function () {
             this.mapCenter.x = (Math.floor(((180.0 + this.model.mapCenter.lon) / 360.0) *
                 ModelHandler.MERCATOR_OFFSET));
-            
+
             var latRads = this.model.mapCenter.lat * Math.PI / 180;
             this.mapCenter.y =
                 (Math.floor(
@@ -122,7 +122,7 @@ define([
             y = y - (this.mapCenter.y - (this.mapHeight / 2));
             return y;
         },
-    
+
         convertLon: function (lon) {
             var x = (Math.floor(((180.0 + lon) / 360.0) * ModelHandler.MERCATOR_OFFSET));
             return x - (this.mapCenter.x - (this.mapWidth / 2));
@@ -156,7 +156,7 @@ define([
         },
 
         locateTrain: function (prediction, lne, cde, direction) {
-            var curr = this.model.routeMap[lne + "-" + cde],
+            var curr = this.model.routeMap[lne + cde],
                 next = null,
                 nextKey = null,
                 prev = null,

@@ -137,7 +137,7 @@ define([
                         .attr('class', 'container');
 
                 d.cds.forEach(function (codes, idx) {
-                    var lne = codes.split('-')[0],
+                    var lne = (/^[A-Z]+/).exec(codes)[0],
                         angle = (stationPos * idx) * Math.PI / 180;
                     node.append('circle')
                         .attr('class', 'entry ' + lne)
@@ -305,7 +305,7 @@ define([
                 .call(this.handleFisheye.bind(this));
 
             this.links
-                .attr('x1', function (d) { return d.source.fisheye[0]; })
+                .attr('x1', function (d) { if (Number.isInteger(d.source)) console.log(d.source); return d.source.fisheye[0]; })
                 .attr('y1', function (d) { return d.source.fisheye[1]; })
                 .attr('x2', function (d) { return d.target.fisheye[0]; })
                 .attr('y2', function (d) { return d.target.fisheye[1]; });

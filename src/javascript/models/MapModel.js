@@ -32,11 +32,11 @@ define([
             return {'nodes': MetroModel.nodes, 'links': MetroModel.links};
         },
 
- 
+
         initMapCenter: function () {
             this.mapCenter.x = (Math.floor(((180.0 + MetroModel.mapCenter.lon) / 360.0) *
                 ModelUtils.MERCATOR_OFFSET));
-            
+
             var latRads = MetroModel.mapCenter.lat * Math.PI / 180;
             this.mapCenter.y =
                 (Math.floor(
@@ -53,7 +53,7 @@ define([
             y = y - (this.mapCenter.y - (this.mapHeight / 2));
             return y;
         },
-    
+
         convertLon: function (lon) {
             var x = (Math.floor(((180.0 + lon) / 360.0) * ModelUtils.MERCATOR_OFFSET));
             return x - (this.mapCenter.x - (this.mapWidth / 2));

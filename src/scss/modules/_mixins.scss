@@ -1,28 +1,28 @@
 $color-line-default: #aaa;
-$color-line-blue: #0795d3;
-$color-line-green: #00b050;
-$color-line-orange: #da8707;
-$color-line-red: #be1337;
-$color-line-silver: #a2a4a1;
-$color-line-yellow: #f5d415;
+$color-line-blue: #0a59ae;
+$color-line-brown: #b57a25;
+$color-line-green: #107547;
+$color-line-orange: #f5a818;
+$color-line-red: #d90023;
+$color-line-yellow: #fedb00;
 
 @mixin metro-fill-lines() {
 	&.BL {
 		fill: $color-line-blue;
 	}
-	&.GR {
+	&.BR {
+		fill: $color-line-brown;
+	}
+	&.G {
 		fill: $color-line-green;
 	}
-	&.OR {
+	&.O {
 		fill: $color-line-orange;
 	}
-	&.RD {
+	&.R {
 		fill: $color-line-red;
-	} 		
-	&.SV {
-		fill: $color-line-silver;
 	}
-	&.YL {
+	&.Y {
 		fill: $color-line-yellow;
 	}
 }
@@ -31,19 +31,19 @@ $color-line-yellow: #f5d415;
 	&.BL {
 		stroke: $color-line-blue;
 	}
-	&.GR {
+	&.BR {
+		stroke: $color-line-brown;
+	}
+	&.G {
 		stroke: $color-line-green;
 	}
-	&.OR {
+	&.O {
 		stroke: $color-line-orange;
 	}
-	&.RD {
+	&.R {
 		stroke: $color-line-red;
-	} 		
-	&.SV {
-		stroke: $color-line-silver;
 	}
-	&.YL {
+	&.Y {
 		stroke: $color-line-yellow;
 	}
 }
