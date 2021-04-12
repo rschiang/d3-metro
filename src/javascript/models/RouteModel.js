@@ -12,28 +12,12 @@ define([
 ) {
     'use strict';
 
-    var ModelUtils = {
-        initialize: function () {},
-
-        trainPrediction: function (routePlan) {
-            var _this = this;
-
-            return Promise.resolve([]);
-        }
-    };
-
-    ModelUtils.MAX_PREDICTIONS = 2;
-    ModelUtils.FEET_PER_MINUTE = 1.46667 * 33 * 60; // @33 mph
-
     /*
     * Create model with default data
     */
     return Model.inherits({
         initialize: function (args) {
-
-            ModelUtils.initialize(args);
             this.routePlanner = new RoutePlanner({model: MetroModel.routeMap});
-            this.set({predictions: []});
             this.set({route: []});
         },
 

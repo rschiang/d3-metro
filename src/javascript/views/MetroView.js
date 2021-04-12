@@ -69,7 +69,6 @@ define([
 
                 this.svg.on('mousemove', this.handleMouseMove.bind(this));
                 this.modelRoute.on('update:route', this.renderRoutePlan, this);
-                this.modelRoute.on('update:predictions', this.renderPredictions, this);
 
             } catch (err) {
                 console.log('error', err);
@@ -232,7 +231,6 @@ define([
 
                 _this.force.stop();
 
-                _this.resetPrediction();
                 _this.resetRoutePlan();
 
                 if (d.isActive) {
@@ -282,7 +280,7 @@ define([
         },
 
         /*
-        * Handle fisheye transforms to station and prediction elements.
+        * Handle fisheye transforms to station.
         */
         handleFisheye: function (node) {
             node.each(function (d) {
@@ -301,9 +299,6 @@ define([
             this.fisheye.focus(d3.mouse(d3.select('#metroMap').node()));
 
             this.nodes
-                .call(this.handleFisheye.bind(this));
-
-            this.svg.selectAll('.metro-prediction')
                 .call(this.handleFisheye.bind(this));
 
             this.links
@@ -367,10 +362,6 @@ define([
                         cls = node.attr('class').split(' ');
                     return cls[0];
                 });
-        },
-
-        resetPrediction: function () {
-            this.svg.selectAll('[class^=metro-prediction]').remove();
         },
 
         /*
@@ -451,112 +442,6 @@ define([
         overlap: function (a, b) {
             return (a.x + a.dx < b.x + b.dx + b.width && a.x + a.dx + a.width > b.x + b.dx &&
                 a.y + a.dy < b.y + b.dy + b.height && a.y + a.dy + a.height > b.y + b.dy);
-        },
-
-        /*
-        * Just for fun....
-        * Calculate and display the location of train on map. The only information available from
-        * WMATA is the time in minutes from a given station.
-        * The distance between station is known, an average speed is assumed, together with
-        * a fixed station stop time. Based on these factors a very rough approximation a trains
-        * location within the system can be determined.
-        */
-        renderPredictions: function () {
-            var _this = this,
-                nodes = this.model.get('nodes'),
-                active = [],
-                predictions = this.modelRoute.get('predictions');
-
-            if (!predictions || predictions.status !== 'success' || !predictions.data.length) {
-                return;
-            }
-
-            this.resetPrediction();
-
-            predictions.data.forEach(function (prediction, idx) {
-                var dist = 0,
-                    prev = (prediction.prev) ? nodes[prediction.prev.id] : null,
-                    curr = (prediction.curr) ? nodes[prediction.curr.id] : null;
-
-                if (!prev && !curr) {
-                    return true;
-                }
-
-                dist = (prediction.fromStation / prediction.nextStation * 100) *
-                    MetroView.config.LINK_DISTANCE / 100;
-
-                var obj = (!prev) ? curr : _this.predictionPosition(prev, curr, dist);
-                obj.idx = idx;
-                obj.min = prediction.min;
-                obj.cde = prediction.cde;
-                obj.lne = prediction.lne;
-                active.push(obj);
-
-            });
-
-            this.svg.selectAll('.metro-prediction')
-                .data(active)
-                .enter()
-                .append('g')
-                .attr('class', function (d) {
-                    return 'metro-prediction ' + d.lne;
-                })
-                .attr('x', function (d) {
-                    return d.x;
-                })
-                .attr('y', function (d) {
-                    return d.y;
-                })
-                .attr('transform', function (d) {
-                    return 'translate(' + [d.x, d.y] + ')';
-                })
-                .each(function () {
-                    var node = d3.select(this);
-                    node.append('circle')
-                        .style('opacity', 0)
-                        .attr('r', 1)
-                        .transition()
-                        .attr('r', MetroView.config.RADIUS + 1)
-                        .style('fill', 'black')
-                        .style('opacity', 0.25);
-
-                    var circle = node.append('circle')
-                        .style('opacity', 0)
-                        .attr('r', MetroView.config.RADIUS)
-                        .style('opacity', 1);
-
-                    (function repeat(r) {
-                        if (!circle) {
-                            return;
-                        }
-
-                        circle
-                            .attr("r", function () {
-                                return (r === MetroView.config.RADIUS) ?
-                                    MetroView.config.RADIUS / 2 : MetroView.config.RADIUS;
-                            })
-                            .transition()
-                            .duration(2000)
-                            .ease('linear')
-                            .attr('r', function () {
-                                return (r === MetroView.config.RADIUS) ?
-                                    MetroView.config.RADIUS : MetroView.config.RADIUS / 2;
-                            })
-                            .each('end', function () {
-                                repeat((r === MetroView.config.RADIUS / 2) ?
-                                    MetroView.config.RADIUS : MetroView.config.RADIUS / 2);
-                            });
-                    })(circle.attr('r'));
-                });
-        },
-
-        predictionPosition: function (p1, p2, dist) {
-            var angle = Math.atan2((p2.y - p1.y), (p2.x - p1.x));
-
-            return {
-                x: p1.x + (dist * Math.cos(angle)),
-                y: p1.y + (dist * Math.sin(angle))
-            };
         }
     };
 
@@ -564,8 +449,6 @@ define([
         'RADIUS': 7,
         'RADIUS_ACTIVE': 14,
         'TRANSITION_DURATION': 125,
-        'PREDICTION_DURATION': 3000,
-        'PREDICTION_DELAY': 1000,
         'LINK_DISTANCE': 25
     };
 

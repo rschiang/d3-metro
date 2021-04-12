@@ -17,7 +17,7 @@ define([
         height: 0,
 
         /*
-        * Initialize sidebar to display route prediction data.
+        * Initialize sidebar to display route.
         * Registor for route model updates.
         */
         initialize: function (args) {
@@ -26,7 +26,6 @@ define([
             this.modelMap = args.modelMap;
             this.modelRoute = args.modelRoute;
             this.container = args.container;
-            this.lastPrediction = [];
 
             this.offset = this.width - (this.width / 100) * RouteView.config.VIEW_OFFSET;
 
@@ -61,22 +60,10 @@ define([
                 .style('opacity', 0)
                 .classed('metro-route-sidebar', true);
 
-            this.ordinalY = d3.scale.ordinal()
-                .domain(d3.range(RouteView.config.MAX_PREDICTIONS + 2))
-                .rangePoints([RouteView.config.PADDING_TOP,
-                    (25 * (RouteView.config.MAX_PREDICTIONS))]);
-
-            this.sideBar.append('g')
-                .classed('metro-route-predictions', true)
-                .call(this.heading.bind(this),
-                    {y: this.ordinalY(0),
-                    text: 'Departing: ',
-                    className: 'heading-predictions'});
-
             this.sideBar.append('g')
                 .classed('metro-route-plan-heading', true)
                 .call(this.heading.bind(this),
-                    {y: this.ordinalY(RouteView.config.MAX_PREDICTIONS + 1) + RouteView.config.PADDING_TOP,
+                    {y: RouteView.config.PADDING_TOP,
                     text: 'Route',
                     className: 'heading-route'});
 
@@ -95,69 +82,6 @@ define([
                 .attr('transform', 'translate(' +
                     [(((this.modelRoute.get('route')) ? this.modelRoute.get('route').length : 0) ?
                         this.offset : this.width), RouteView.config.PADDING_TOP] + ')');
-
-            this.renderPredictions();
-        },
-
-       /*
-        * Display prediction data in sidebar
-        */
-        renderPredictions: function () {
-            var _this = this,
-                predictions = _this.modelRoute.get('predictions'),
-                data = (predictions.data) ? predictions.data.splice(0, RouteView.config.MAX_PREDICTIONS) : [],
-                elem;
-
-            if (predictions.status !== 'success' && typeof _this.lastPrediction !== 'undefined') {
-                return;
-            }
-
-            elem = _this.svg.select('.metro-route-predictions')
-                .selectAll('.metro-route-prediction')
-                .data(data);
-
-            elem.enter()
-                .append('g')
-                .classed('metro-route-prediction', true);
-
-            elem.each(function (d, idx) {
-                    var node = d3.select(this),
-                        last = _this.lastPrediction[idx],
-                        y = _this.ordinalY(idx + 1);
-
-                    if (!last || last.lne !== d.lne) {
-                        node.append('circle')
-                            .attr('r', RouteView.config.RADIUS)
-                            .attr('class', function (d) {
-                                return 'line ' + d.lne;
-                            })
-                            .attr('cx', RouteView.config.RADIUS)
-                            .attr('cy', y);
-                    }
-
-                    if (!last || last.min !== d.min) {
-                        node.call(_this.handleTextUpdate.bind(_this), {
-                            x: RouteView.config.RADIUS + RouteView.config.PADDING * 2,
-                            y: y + RouteView.config.RADIUS,
-                            text:  (isNaN(d.min) ? d.min : d.min + ' min(s)'),
-                            className: 'arrival'
-                        });
-                    }
-
-                    if (!last ||
-                        _this.modelMap.get('nodes')[last.id].nme !==
-                        _this.modelMap.get('nodes')[d.id].nme) {
-                        node.call(_this.handleTextUpdate.bind(_this), {
-                            x: 60,
-                            y: y + RouteView.config.RADIUS,
-                            text: _this.modelMap.get('nodes')[d.id].nme,
-                            className: 'destination'
-                        });
-                    }
-                });
-
-            elem.call(_this.remove);
-            _this.lastPrediction = data;
         },
 
         /*
@@ -167,19 +91,11 @@ define([
             var _this = this,
                 bz = bezier().on('tick', _this.tick.bind(this)),
                 y = d3.scale.ordinal(),
-                h = (_this.modelRoute.get('route').length * RouteView.config.ELEMENT_HEIGHT) +
-                    _this.ordinalY(RouteView.config.MAX_PREDICTIONS) + RouteView.config.PADDING_TOP * 2;
-
-            _this.svg.select('.heading-predictions')
-                .text(function () {
-                    var id = (_this.modelRoute.get('route')[0]) ? _this.modelRoute.get('route')[0].id : null;
-                    return 'Departing: ' + ((id) ? _this.modelMap.get('nodes')[id].nme : '');
-                });
+                h = (_this.modelRoute.get('route').length * RouteView.config.ELEMENT_HEIGHT);
 
             h = (h > _this.height) ? _this.height : h;
             y.domain(d3.range(_this.modelRoute.get('route').length))
-                .rangePoints([_this.ordinalY(RouteView.config.MAX_PREDICTIONS) +
-                    RouteView.config.PADDING_TOP * 2, h], 1);
+                .rangePoints([0, h], 1);
 
             _this.generateRouteLinks();
             _this.routeLinks = _this.svg.select('.metro-route-plan')
@@ -292,7 +208,7 @@ define([
                 })
                 .classed('metro-text', true)
                 .transition()
-                .duration(2000)
+                .duration(RouteView.config.TRANSITION_DURATION)
                 .style('opacity', '1')
                 .attr('x', function (d) {
                     return d.x;
@@ -304,7 +220,7 @@ define([
 
         transitionShape: function (node) {
             node.transition()
-                .duration(2000)
+                .duration(RouteView.config.TRANSITION_DURATION)
                 .style('fill-opacity', '1')
                 .attrTween('stroke-dasharray', function () {
                     var l = node.node().getTotalLength(),
@@ -411,9 +327,9 @@ define([
         'PADDING_LEFT': 0,
         'PADDING_RIGHT': 14,
         'PADDING': 7,
-        'PADDING_TOP': 7,
+        'PADDING_TOP': 35,
         'ELEMENT_HEIGHT': 35,
-        'MAX_PREDICTIONS' : 3
+        'TRANSITION_DURATION': 560
     };
 
     return {
