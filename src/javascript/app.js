@@ -2,8 +2,8 @@
 requirejs.config({
     baseUrl: '.',
     paths: {
-        d3: '../../bower_components/d3/d3',
-        d3fisheye: '../../bower_components/d3.fisheye/fisheye/fisheye'
+        d3: '../../node_modules/d3/d3',
+        d3fisheye: '../../node_modules/d3-fisheye/build/d3-fisheye'
     }
 });
 

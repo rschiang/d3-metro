@@ -3,15 +3,15 @@ define([
     '../utils/Events',
     'd3',
     'd3fisheye'
-    
+
 ], function (
     MetroMenu,
     events,
-    d3
-
+    d3,
+    d3fisheye
 ) {
     'use strict';
-    
+
     var MetroView = {
         svg: null,
         links: null,
@@ -38,7 +38,7 @@ define([
 
                 MetroMenu.initialize();
 
-                this.fisheye = d3.fisheye.circular()
+                this.fisheye = d3fisheye.circular()
                     .radius(75)
                     .distortion(3);
 
@@ -91,7 +91,7 @@ define([
             this.model.get('links').forEach(function (d, idx) {
                 _this.linkedByIndex[d.source + ',' + d.target] = idx;
             });
-            
+
             this.nodes = this.svg.selectAll('.node')
                 .data(this.model.get('nodes'))
                 .enter()
@@ -103,7 +103,7 @@ define([
                 });
 
             this.addStations();
-            
+
             this.labels = this.svg.selectAll('.station-name');
 
             this.force.start();
@@ -117,7 +117,7 @@ define([
                 if ((idx + 1) > plan.length - 1) {
                     return false;
                 }
-                
+
                 var lIdx = this.getLinkIndex(entry, plan[idx + 1]);
 
                 if (lIdx > -1) {
@@ -158,7 +158,7 @@ define([
                             return MetroView.config.RADIUS * Math.sin(angle);
                         });
                 });
-                
+
                 node.append('text')
                     .text(function (d) {
                         return d.nme;
@@ -241,17 +241,17 @@ define([
                         }
                     }
                     d.isActive = false;
-                    
+
                     events.emit('map-route');
 
                     node.selectAll('circle')
                         .call(_this.activateStation);
-                    
+
                     return;
                 }
 
                 if (active.length >= 2) {
-                    
+
                     events.emit('map-route');
 
                     i = active.length;
@@ -284,12 +284,12 @@ define([
         */
         handleFisheye: function (node) {
             node.each(function (d) {
-                d.fisheye = this.fisheye(d);
+                d.fisheye = this.fisheye([d.x, d.y]);
             }.bind(this))
             .attr('transform', function (d) {
-                return 'translate(' + [d.fisheye.x, d.fisheye.y] + ')';
+                return 'translate(' + [d.fisheye[0], d.fisheye[1]] + ')';
             })
-            .attr('r', function (d) { return d.fisheye.z * 4.5; });
+            .attr('r', function (d) { return d.fisheye[2] * 4.5; });
         },
 
         /*
@@ -305,10 +305,10 @@ define([
                 .call(this.handleFisheye.bind(this));
 
             this.links
-                .attr('x1', function (d) { return d.source.fisheye.x; })
-                .attr('y1', function (d) { return d.source.fisheye.y; })
-                .attr('x2', function (d) { return d.target.fisheye.x; })
-                .attr('y2', function (d) { return d.target.fisheye.y; });
+                .attr('x1', function (d) { return d.source.fisheye[0]; })
+                .attr('y1', function (d) { return d.source.fisheye[1]; })
+                .attr('x2', function (d) { return d.target.fisheye[0]; })
+                .attr('y2', function (d) { return d.target.fisheye[1]; });
         },
 
         getLinkIndex: function (curr, next) {
@@ -370,7 +370,7 @@ define([
         resetPrediction: function () {
             this.svg.selectAll('[class^=metro-prediction]').remove();
         },
- 
+
         /*
         * Resolves collisions for train station label positioning
         */
@@ -383,7 +383,7 @@ define([
                     nx2 = d.x + d.dx + d.width,
                     ny1 = d.y,
                     ny2 = d.y + d.dy + d.height;
-                
+
                 quadtree.visit(function (quad, x1, y1, x2, y2) {
                     if (quad.point && quad.point !== d && _this.overlap(d, quad.point)) {
                         _this.labelPosition(d);
@@ -412,7 +412,7 @@ define([
             case 0:
                 d.dy = d.height / 2;
                 break;
-            
+
             case 45:
                 d.dy = -1 * d.dy;
                 break;
@@ -421,23 +421,23 @@ define([
                 d.dx += -1 * ((d.width - (r + padding)) / 2);
                 d.dy = -1 * d.dy;
                 break;
-            
+
             case 135:
                 d.dx = -1 * d.width;
                 break;
-            
+
             case 180:
                 d.dx += -1 * (d.width + padding);
                 break;
-            
+
             case 225:
                 d.dx += -1 * d.width;
                 break;
-            
+
             case 270:
                 d.dx += -1 * d.width - (r + padding);
                 break;
-            
+
             case 315:
                 break;
             }
@@ -453,7 +453,7 @@ define([
 
         /*
         * Just for fun....
-        * Calculate and display the location of train on map. The only information available from 
+        * Calculate and display the location of train on map. The only information available from
         * WMATA is the time in minutes from a given station.
         * The distance between station is known, an average speed is assumed, together with
         * a fixed station stop time. Based on these factors a very rough approximation a trains
@@ -470,7 +470,7 @@ define([
             }
 
             this.resetPrediction();
-            
+
             predictions.data.forEach(function (prediction, idx) {
                 var dist = 0,
                     prev = (prediction.prev) ? nodes[prediction.prev.id] : null,
@@ -522,7 +522,7 @@ define([
                         .style('opacity', 0)
                         .attr('r', MetroView.config.RADIUS)
                         .style('opacity', 1);
-                    
+
                     (function repeat(r) {
                         if (!circle) {
                             return;

@@ -15,7 +15,7 @@ define([
         * Simple Ajax support...
         */
         request: function (request) {
-            
+
             request.t = Ajax.config.TIMEOUT;
             request.id = Math.round(100000 * Math.random());
             request.cb = 'cbFn' + request.id;
@@ -80,7 +80,7 @@ define([
             req.timeout = Ajax.config.TIMEOUT;
             req.ontimeout = function() {
                 reject('Request timed out');
-            }
+            };
 
             req.onreadystatechange = function () {
                 if (req.readyState == XMLHttpRequest.DONE) {
@@ -94,7 +94,7 @@ define([
                         reject('Invalid response');
                     }
                 }
-            }
+            };
 
             req.open('GET', request.url, true);
             req.send();
