@@ -46,7 +46,9 @@ define([
                 this.force = d3.layout.force()
                     .size([width, height])
                     .charge(function (d) {
-                        return -30;
+                        return (d.tc === 's') ?
+                        -35 : (d.tc === 'm') ?
+                        -50 : -45;
                     })
                     .linkStrength(function (d) {
                         return 1.5;
@@ -564,7 +566,7 @@ define([
         'TRANSITION_DURATION': 125,
         'PREDICTION_DURATION': 3000,
         'PREDICTION_DELAY': 1000,
-        'LINK_DISTANCE': 30
+        'LINK_DISTANCE': 25
     };
 
     return {
