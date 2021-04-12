@@ -1,5 +1,5 @@
 module.exports = function(grunt) {
-	
+
 	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
 	grunt.initConfig({
@@ -9,7 +9,8 @@ module.exports = function(grunt) {
                 options: {              // Target options
                     sassDir: 'src/scss/',
                     cssDir: 'public/stylesheets',
-                    environment: 'development'
+                    environment: 'development',
+					outputStyle: 'compressed'
                 }
             }
         },
@@ -60,5 +61,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
-    grunt.registerTask('default', ['requirejs:dev', 'compass', 'jshint']);
+    grunt.registerTask('default', ['requirejs:prod', 'compass', 'jshint']);
 }

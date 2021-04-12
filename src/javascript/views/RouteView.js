@@ -282,14 +282,6 @@ define([
                 .text(args.text)
                 .classed(args.className, true)
                 .attr('y', args.y)
-                //.attr('textLength', function () {
-                //    if (this.getComputedTextLength() > args.width - RouteView.config.PADDING_RIGHT) {
-                //        return args.width - RouteView.config.PADDING_RIGHT;
-                //    }
-
-                //    return this.getComputedTextLength();
-                //})
-                //.attr('lengthAdjust', 'spacing')
                 .attr('text-decoration', 'underline');
         },
 
